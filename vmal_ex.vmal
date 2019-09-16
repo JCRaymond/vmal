@@ -1,0 +1,46 @@
+# This is a comment
+# Apart from comments, every line should end with a ;
+
+4: 1337; # This is also a comment, after a register initializer
+         # You may also indent however you want
+         # This register initializer sets the value of register
+         # 4 (which is the TIR register) to the value 1337
+
+A: 0x1D; # This initializes the value of register A (which is
+         # also called the A register) to the value 1D in
+         # hexadecimal, which is equal to 29
+
+D: 0b00110001; # This initializes the value of register D (which
+               # is also called the D register) to the value
+               # 110001 in binary, which is 49
+               
+ADD E, A; # This adds the value of register A to register E, and
+          # stores the result in E
+
+AdD e, A; # Same as above, but VMAL is case insensitive (with the
+          # exception of labels)
+
+LBL JumpHere; # Creates a label at this position. This does not
+              # end up in the final assembled code
+
+ADD E, 7; # Adds -1 to E (note that 7 is the address of the -1
+          # register, which is initially set to -1
+
+SF E; # Sets the N and Z flags depending on the value in E
+
+BIZ JumpHere; # Branches to JumpHere if the Z flag is true (if
+              # E was 0 when the above SF instruction was run)
+
+GO JumpHERE; # Branches to the JumpHERE label BELOW, since
+             # labels are case sensitive
+
+LBL JumpHERE;
+
+LBL JumpHere_236; # Extra labels don't matter
+
+# LBL JumpHere; # According to the way that VMAL is implemented,
+                # the last definition for a certain label is the
+                # only valid label, so if this line was not
+                # commented, the BIZ JumpHere operation would 
+                # branch to this instead of the first label.
+
