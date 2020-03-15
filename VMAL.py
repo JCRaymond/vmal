@@ -26,8 +26,8 @@ int32_max = 0xffffffff
 
 class Assembler(Transformer):
    @v_args(inline=True)
-   def start(self, state, code):
-      return {'state':state, 'code':code}
+   def start(self, regstate, memstate, code):
+      return {'regstate':regstate, 'memstate':memstate, 'code':code}
 
    def code(self, ops):
       labels = {}
@@ -58,8 +58,10 @@ class Assembler(Transformer):
          params = list(map(str,params))
       return (op, *params)
    
-   def state(self, reginits):
+   def regstate(self, reginits):
       return reginits
+   def memstate(self, meminits):
+      return meminits
    @v_args(inline=True)
    def decnum(self, num):
       return int(num) & int32_max
@@ -73,11 +75,17 @@ class Assembler(Transformer):
    def register(self, regnum):
       return int(regnum, 16)
    @v_args(inline=True)
+   def memloc(self, memloc):
+      return memloc
+   @v_args(inline=True)
    def reginit(self, register, num):
       return (register, num)
+   @v_args(inline=True)
+   def meminit(self, memloc, num):
+      return (memloc, num)
 
 grammar = """
-start: state code
+start: regstate memstate code
 
 // Lexers
 
@@ -108,15 +116,18 @@ opname: CNAME
 param: PARAM
 
 register: HEXDIGIT
+memloc: "[" _number "]"
 hexnum: "0x" HEXNUM
 binnum: "0b" BINNUM
 decnum: SIGNED_INT 
 
 // Parse register initializers
 
-state: reginit*
+regstate: reginit*
+memstate: meminit*
 
 reginit: register ":" _number ";"
+meminit: memloc ":" _number ";"
 
 _number: hexnum | binnum | decnum
 
@@ -150,16 +161,21 @@ def printop(op):
    print(ops[op], ', '.join(params))
 
 def runcode(code, debug=False):
-   init_state = code['state']
+   regstate = code['regstate']
+   memstate = code['memstate']
    code = code['code']
    
    state = [0] * 16
-   for reg, val in init_state:
+   for reg, val in regstate:
       state[reg] = val & int32_max
    state[5] = 0
    state[6] = 1
    state[7] = int32_max
+
    mem = {}
+   for loc, val in memstate:
+      mem[loc] = val
+
    MAR = 0
    MBR = 0
    N = False
@@ -321,7 +337,11 @@ def main():
    print('Final Register State:')
    printregisters(finalstate)
    print()
-   input('Press ENTER to terminate...')
    
 if __name__ == "__main__":
-   main()
+   try:
+      main()
+   except Exception as err:
+      print(err)
+      print('ERROR OCCURED')
+   input('Press ENTER to terminate...')
