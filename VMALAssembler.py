@@ -1,3 +1,5 @@
+import re
+
 op_map = {
    'SA': 0,
    'RB': 1,
@@ -42,6 +44,8 @@ def parse_number(s):
         return int(s), None
     except ValueError:
         return None, 'Invalid character sequence in {} initializer - "{}"'
+
+is_cname = re.compile('[_a-zA-Z][_a-zA-Z0-9]*')
 
 def assemble(f):
     reg_inits = []
@@ -115,7 +119,11 @@ def assemble(f):
                 return None
             lbl = args[0]
             if op_num == -1:
-                label_map[lbl.strip()] = len(instructions) - 1
+                match = is_cname.fullmatch(lbl)
+                if match is None:
+                    printerror(i, line, f'Label name is not a valid cname - "{lbl}"')
+                    return None
+                label_map[lbl] = len(instructions) - 1
                 continue
             lbl_lines[len(instructions)] = (i, line)
             instructions.append((op_num, lbl))
@@ -179,13 +187,3 @@ def assemble(f):
             instructions[j] = (op, label_map[lbl])
 
     return instructions, reg_inits, mem_inits
-
-if __name__ == '__main__':
-    with open('mergesort.vmal', 'r') as f:
-        res = parse_vmal(f)
-        if res is not None:
-            instructions, reg_inits, mem_inits = res
-            print(instructions)
-            print(reg_inits)
-            print(mem_inits)
-
