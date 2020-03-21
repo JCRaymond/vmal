@@ -2,7 +2,7 @@
 This repository holds the reference implementation for VMAL, an assembly language for the Vertical Microarchitecture discussed in ITSC 3181 at UNC-Charlotte.
 
 ## Requirements
-All of the code for VMAL is contained within VMAL.py, which requires Python 3.6 or greater. Optionally, if you wish to use the file explorer to select the code to run, the `easygui` package is required, which can be installed with pip:
+The main file to run is VMAL.py (which uses VMALAssembler.py), which requires Python 3.6 or greater. Optionally, if you wish to use the file explorer to select the code to run, the `easygui` package is required, which can be installed with pip:
 ```bash
 pip install --user easygui
 ```
