@@ -1,4 +1,7 @@
-import vmal.VMALAssembler
+if __package__ is None or __package__ == '':
+   import VMALAssembler
+else:
+   import vmal.VMALAssembler as VMALAssembler
 from collections import defaultdict
 from pprint import pprint
 
