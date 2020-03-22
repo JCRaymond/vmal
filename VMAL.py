@@ -1,4 +1,4 @@
-import VMALAssembler
+import vmal.VMALAssembler
 from collections import defaultdict
 from pprint import pprint
 
@@ -112,7 +112,7 @@ class VM:
    def runop(self, op, *params):
       self.ops[op](self, *params)
 
-   def runcode(self, code, limit = float('inf')):
+   def runcode(self, code, *, limit = float('inf')):
       i = 0
       while self.registers[0] < len(code):
          if i >= limit:
@@ -123,7 +123,7 @@ class VM:
          i += 1
       return True
 
-   def rundebug(self, code, limit = float('inf')):
+   def rundebug(self, code, *, limit = float('inf')):
       i = 0
       bp = set()
       cont = False
