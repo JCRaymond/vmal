@@ -16,7 +16,7 @@ def printcode(code):
    print(*(f'{i: 3}: {op_str(op)}' for i, op in enumerate(code)), sep = '\n')
 
 def get_int(reg_val):
-   return (reg_val if reg_val & 0x80000000 == 0 else -((-reg_val) & VM.int_max))
+   return (reg_val if reg_val & (~(VM.int_max >> 1) & VM.int_max) == 0 else -((-reg_val) & VM.int_max))
 
 class VM:
    int_max = 0xffffffff
