@@ -147,7 +147,7 @@ class VM:
                print('Continue till Breakpoint')
             if on_bp:
                print('BREAKPOINT')
-            print(f'Operation: {op_str(op)}',end='')
+            print(f'Operation: {op_str(op)}')
             
             while True:
                resp = input('Debug (n,b,c,r,q): ')
@@ -226,10 +226,8 @@ def main():
    else:
       print()
       print('Assembled Code:')
-      for i, op in enumerate(machine_code[0]):
-         print(i, ': ', sep='', end='')
-         printop(op)
-      success = vm.rundebug(machine_code)
+      printcode(code)
+      success = vm.rundebug(code)
 
    if not success:
       print('Code run was not successful (operation limit reached or program quit), terminating')
