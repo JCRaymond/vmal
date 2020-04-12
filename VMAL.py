@@ -130,12 +130,13 @@ class VM:
       i = 0
       bp = set()
       cont = False
+      debug = True
       while self.registers[0] < len(code):
          if i >= limit:
             return False
          op = code[self.registers[0]]
          on_bp = self.registers[0] in bp
-         if not cont or on_bp:
+         if debug and (not cont or on_bp):
             self.printregisters()
             
             print('Flags:')

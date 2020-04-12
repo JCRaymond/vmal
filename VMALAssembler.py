@@ -1,5 +1,3 @@
-import re
-
 op_map = {
    'SA': 0,
    'RB': 1,
