@@ -12,7 +12,7 @@ In order to run VMAL, there are two options. The first is to just run VMAL with 
 ```bash
 python3.6 VMAL.py
 ```
-Which will open a file browser to select the .vmal file to execute (this requires `easygui`). Alternatively, you may pass the file directly as a command line argument, which will supress the file browser prompt (and does not require the `easygui` package.
+Which will open a file browser to select the .vmal file to execute (this requires `easygui`). Alternatively, you may pass the file directly as a command line argument, which will supress the file browser prompt (and does not require the `easygui` package).
 ```bash
 python3.6 VMAL.py my_code.vmal
 ```
