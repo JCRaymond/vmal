@@ -26,7 +26,7 @@ one_reg_ops = {0, 1, 4, 5}
 two_reg_ops = {9, 10, 11, 12, 13, 14, 15}
 
 def printerror(i, line, msg):
-    print(f'Error on line #{i}: {msg}')
+    print(f'Error on line #{i+1}: {msg}')
     print(f'\t> {line}')
 
 def parse_number(s):
@@ -122,6 +122,9 @@ def assemble(f):
                 match = is_cname.fullmatch(lbl)
                 if match is None:
                     printerror(i, line, f'Label name is not a valid cname - "{lbl}"')
+                    return None
+                if lbl in label_map:
+                    printerror(i, line, f'Label "{lbl}" already defined')
                     return None
                 label_map[lbl] = len(instructions) - 1
                 continue
