@@ -1,0 +1,2 @@
+# Give .vmal files Perl-style syntax highlighting (highlights comments and semicolons)
+*.vmal linguist-language=Perl
